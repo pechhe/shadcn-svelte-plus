@@ -6,7 +6,17 @@ links:
   source: https://github.com/pechhe/shadcn-svelte-plus/tree/main/docs/src/lib/registry/ui/message-scroller
 ---
 
+<script>
+	import ComponentPreview from "$lib/components/component-preview.svelte";
+</script>
+
 `MessageScroller` owns transcript scroll behavior without owning your messages, transport, persistence, or AI state. It follows streamed output only while the reader is following, anchors new turns near the top, preserves position when history is prepended, and supports message jumps.
+
+<ComponentPreview name="message-scroller-demo">
+
+<div></div>
+
+</ComponentPreview>
 
 ## Installation
 

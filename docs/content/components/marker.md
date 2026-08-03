@@ -6,7 +6,17 @@ links:
   source: https://github.com/pechhe/shadcn-svelte-plus/tree/main/docs/src/lib/registry/ui/marker
 ---
 
+<script>
+	import ComponentPreview from "$lib/components/component-preview.svelte";
+</script>
+
 Compose `Marker` with [`Message`](/docs/components/message) for status updates, system notes, and labeled separators in a conversation.
+
+<ComponentPreview name="marker-demo">
+
+<div></div>
+
+</ComponentPreview>
 
 ## Installation
 

@@ -6,7 +6,17 @@ links:
   source: https://github.com/pechhe/shadcn-svelte-plus/tree/main/docs/src/lib/registry/ui/message
 ---
 
+<script>
+	import ComponentPreview from "$lib/components/component-preview.svelte";
+</script>
+
 `Message` owns the row layout around a message surface: avatar, alignment, header, and footer. Render the visible surface with [`Bubble`](/docs/components/bubble), and use [`Message Scroller`](/docs/components/message-scroller) around the transcript.
+
+<ComponentPreview name="message-demo">
+
+<div></div>
+
+</ComponentPreview>
 
 ## Installation
 

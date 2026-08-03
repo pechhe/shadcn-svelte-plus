@@ -6,7 +6,17 @@ links:
   source: https://github.com/pechhe/shadcn-svelte-plus/tree/main/docs/src/lib/registry/ui/attachment
 ---
 
+<script>
+	import ComponentPreview from "$lib/components/component-preview.svelte";
+</script>
+
 `Attachment` displays a file or image attachment with media, metadata, actions, and upload state. Use it in chat composers, message threads, and upload lists.
+
+<ComponentPreview name="attachment-demo">
+
+<div></div>
+
+</ComponentPreview>
 
 ## Installation
 

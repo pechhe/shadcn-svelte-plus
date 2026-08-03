@@ -6,7 +6,17 @@ links:
   source: https://github.com/pechhe/shadcn-svelte-plus/tree/main/docs/src/lib/registry/ui/typeset
 ---
 
+<script>
+	import ComponentPreview from "$lib/components/component-preview.svelte";
+</script>
+
 Typeset styles headings, paragraphs, lists, tables, code, and other rendered HTML inside a single container. The installed `typeset.css` file lives in your project, so you can edit it directly.
+
+<ComponentPreview name="typeset-demo" align="start">
+
+<div></div>
+
+</ComponentPreview>
 
 ## Installation
 

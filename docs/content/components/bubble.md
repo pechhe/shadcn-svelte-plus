@@ -6,7 +6,17 @@ links:
   source: https://github.com/pechhe/shadcn-svelte-plus/tree/main/docs/src/lib/registry/ui/bubble
 ---
 
+<script>
+	import ComponentPreview from "$lib/components/component-preview.svelte";
+</script>
+
 `Bubble` is the framed conversation surface. Put avatars, names, timestamps, and message-level actions in [`Message`](/docs/components/message).
+
+<ComponentPreview name="bubble-demo">
+
+<div></div>
+
+</ComponentPreview>
 
 ## Installation
 
