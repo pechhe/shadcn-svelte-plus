@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { cn, type WithElementRef } from "$lib/utils.js";
-	import { useMessageScroller } from "./message-scroller.svelte.js";
+	import { useMessageScrollerController } from "./message-scroller.svelte.js";
 	import type { HTMLAttributes } from "svelte/elements";
 
-	const controller = useMessageScroller();
+	const controller = useMessageScrollerController();
 	let spacerRef: HTMLDivElement | null = $state(null);
 	let {
 		ref = $bindable(null),
@@ -49,7 +49,7 @@
 	data-slot="message-scroller-content"
 	{role}
 	aria-relevant={ariaRelevant}
-	class={cn("flex h-max min-h-full flex-col gap-8", className)}
+	class={cn("cn-message-scroller-content flex h-max min-h-full flex-col", className)}
 	{...restProps}
 >
 	{@render children?.()}

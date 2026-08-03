@@ -29,5 +29,6 @@ export {
 	type MessageScrollerScrollAlign,
 	type MessageScrollerScrollOptions,
 	type MessageScrollerScrollable,
+	type MessageScrollerVisibilityState,
 	type MessageScrollerVisibility,
 } from "./message-scroller.svelte.js";

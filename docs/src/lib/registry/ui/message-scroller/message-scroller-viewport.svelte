@@ -2,11 +2,11 @@
 	import { cn, type WithElementRef } from "$lib/utils.js";
 	import {
 		MESSAGE_SCROLLER_USER_SCROLL_KEYS,
-		useMessageScroller,
+		useMessageScrollerController,
 	} from "./message-scroller.svelte.js";
 	import type { HTMLAttributes } from "svelte/elements";
 
-	const controller = useMessageScroller();
+	const controller = useMessageScrollerController();
 	let {
 		ref = $bindable(null),
 		class: className,
@@ -71,7 +71,7 @@
 	aria-label={ariaLabel}
 	{tabindex}
 	class={cn(
-		"size-full min-h-0 min-w-0 scroll-fade-b scrollbar-thin scrollbar-gutter-stable overflow-y-auto overscroll-contain contain-content data-autoscrolling:scrollbar-none",
+		"cn-message-scroller-viewport size-full min-h-0 min-w-0 scroll-fade-b scrollbar-thin scrollbar-gutter-stable overflow-y-auto overscroll-contain contain-content data-autoscrolling:scrollbar-thumb-transparent data-autoscrolling:scrollbar-track-transparent",
 		className
 	)}
 	onscroll={handleScroll}

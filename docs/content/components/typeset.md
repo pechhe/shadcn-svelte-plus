@@ -1,6 +1,6 @@
 ---
 title: Typeset
-description: A styling system for HTML and rendered markdown, from blog posts to streaming chat.
+description: A styling system for HTML and rendered markdown, from blog posts to streaming chat. One CSS file you own.
 component: true
 links:
   source: https://github.com/pechhe/shadcn-svelte-plus/tree/main/docs/src/lib/registry/ui/typeset
@@ -12,7 +12,7 @@ links:
 
 Typeset styles headings, paragraphs, lists, tables, code, and other rendered HTML inside a single container. The installed `typeset.css` file lives in your project, so you can edit it directly.
 
-<ComponentPreview name="typeset-demo" align="start">
+<ComponentPreview name="typeset-demo" align="start" previewClass="h-auto">
 
 <div></div>
 

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { cn, type WithElementRef } from "$lib/utils.js";
-	import { useMessageScroller } from "./message-scroller.svelte.js";
+	import { useMessageScrollerController } from "./message-scroller.svelte.js";
 	import type { HTMLAttributes } from "svelte/elements";
 
-	const controller = useMessageScroller();
+	const controller = useMessageScrollerController();
 	let {
 		ref = $bindable(null),
 		class: className,
@@ -31,7 +31,7 @@
 	data-message-id={messageId}
 	data-scroll-anchor={scrollAnchor ? "true" : "false"}
 	class={cn(
-		"min-w-0 shrink-0 [contain-intrinsic-size:auto_10rem] [content-visibility:auto]",
+		"cn-message-scroller-item min-w-0 shrink-0 [contain-intrinsic-size:auto_10rem] [content-visibility:auto]",
 		className
 	)}
 	{...restProps}

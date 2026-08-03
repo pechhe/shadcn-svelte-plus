@@ -1,52 +1,75 @@
 <script lang="ts">
-	import BotIcon from "@lucide/svelte/icons/bot";
-	import UserIcon from "@lucide/svelte/icons/user";
+	import * as Avatar from "$lib/registry/ui/avatar/index.js";
 	import * as Bubble from "$lib/registry/ui/bubble/index.js";
+	import * as Marker from "$lib/registry/ui/marker/index.js";
 	import * as Message from "$lib/registry/ui/message/index.js";
 </script>
 
-<div class="w-full max-w-xl">
-	<Message.Group>
-		<Message.Root>
-			<Message.Avatar class="size-8 bg-primary text-primary-foreground">
-				<BotIcon class="size-4" />
-			</Message.Avatar>
-			<Message.Content>
-				<Message.Header>Assistant · just now</Message.Header>
+<div class="flex w-full max-w-sm flex-col gap-6 py-12">
+	<Message.Root align="end">
+		<Message.Avatar>
+			<Avatar.Root>
+				<Avatar.Image src="/avatars/10.png" alt="@me" />
+				<Avatar.Fallback>ME</Avatar.Fallback>
+			</Avatar.Root>
+		</Message.Avatar>
+		<Message.Content>
+			<Bubble.Root>
+				<Bubble.Content>Deploying to prod real quick.</Bubble.Content>
+			</Bubble.Root>
+		</Message.Content>
+	</Message.Root>
+	<Message.Root>
+		<Message.Avatar>
+			<Avatar.Root>
+				<Avatar.Image src="/avatars/02.png" alt="@rabbit" />
+				<Avatar.Fallback>R</Avatar.Fallback>
+			</Avatar.Root>
+		</Message.Avatar>
+		<Message.Content>
+			<Bubble.Root variant="muted">
+				<Bubble.Content>It's 4:55 PM. On a Friday.</Bubble.Content>
+			</Bubble.Root>
+		</Message.Content>
+	</Message.Root>
+	<Message.Root align="end">
+		<Message.Avatar>
+			<Avatar.Root>
+				<Avatar.Image src="/avatars/10.png" alt="@me" />
+				<Avatar.Fallback>ME</Avatar.Fallback>
+			</Avatar.Root>
+		</Message.Avatar>
+		<Message.Content>
+			<Bubble.Root>
+				<Bubble.Content>It's a one-line change.</Bubble.Content>
+			</Bubble.Root>
+			<Message.Footer>Delivered</Message.Footer>
+		</Message.Content>
+	</Message.Root>
+	<Message.Root>
+		<Message.Avatar>
+			<Avatar.Root>
+				<Avatar.Image src="/avatars/02.png" alt="@rabbit" />
+				<Avatar.Fallback>R</Avatar.Fallback>
+			</Avatar.Root>
+		</Message.Avatar>
+		<Message.Content>
+			<Bubble.Group>
 				<Bubble.Root variant="muted">
-					<Bubble.Content>
-						I can help you compare the available components and choose the right composition.
-					</Bubble.Content>
+					<Bubble.Content>It's always a one-line change 😭.</Bubble.Content>
 				</Bubble.Root>
-				<Message.Footer>Helpful</Message.Footer>
-			</Message.Content>
-		</Message.Root>
-
-		<Message.Root align="end">
-			<Message.Avatar class="size-8 bg-muted text-foreground">
-				<UserIcon class="size-4" />
-			</Message.Avatar>
-			<Message.Content>
-				<Message.Header>You · just now</Message.Header>
-				<Bubble.Root align="end" variant="default">
-					<Bubble.Content>Show me a compact example with an avatar and metadata.</Bubble.Content>
+				<Bubble.Root variant="muted">
+					<Bubble.Content>Alright, let me take a look.</Bubble.Content>
+					<Bubble.Reactions aria-label="Reactions: thumbs up">
+						<span>👍</span>
+					</Bubble.Reactions>
 				</Bubble.Root>
-				<Message.Footer>Delivered</Message.Footer>
-			</Message.Content>
-		</Message.Root>
-
-		<Message.Root>
-			<Message.Avatar class="size-8 bg-muted text-muted-foreground">
-				<BotIcon class="size-4" />
-			</Message.Avatar>
-			<Message.Content>
-				<Bubble.Root variant="tinted">
-					<Bubble.Content>
-						Keep the message shell responsible for layout and let Bubble handle the visual
-						treatment.
-					</Bubble.Content>
-				</Bubble.Root>
-			</Message.Content>
-		</Message.Root>
-	</Message.Group>
+			</Bubble.Group>
+		</Message.Content>
+	</Message.Root>
+	<Marker.Root role="status">
+		<Marker.Content class="shimmer">
+			<span class="font-medium">Oliver</span> is typing...
+		</Marker.Content>
+	</Marker.Root>
 </div>

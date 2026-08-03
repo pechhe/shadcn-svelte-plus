@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { cn, type WithElementRef } from "$lib/utils.js";
-	import { useMessageScroller } from "./message-scroller.svelte.js";
+	import { useMessageScrollerController } from "./message-scroller.svelte.js";
 	import type { HTMLAttributes } from "svelte/elements";
 
-	const controller = useMessageScroller();
+	const controller = useMessageScrollerController();
 	let {
 		ref = $bindable(null),
 		class: className,
@@ -21,7 +21,7 @@
 	bind:this={ref}
 	data-slot="message-scroller"
 	class={cn(
-		"group/message-scroller relative flex size-full min-h-0 flex-col overflow-hidden",
+		"cn-message-scroller group/message-scroller relative flex size-full min-h-0 flex-col overflow-hidden",
 		className
 	)}
 	{...restProps}

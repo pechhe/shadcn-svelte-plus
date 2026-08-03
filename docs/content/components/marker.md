@@ -10,9 +10,9 @@ links:
 	import ComponentPreview from "$lib/components/component-preview.svelte";
 </script>
 
-Compose `Marker` with [`Message`](/docs/components/message) for status updates, system notes, and labeled separators in a conversation.
+The `Marker` component displays inline conversation markers such as status updates, system notes, bordered rows, and labeled separators. Compose it with [`Message`](/docs/components/message) in a conversation thread.
 
-<ComponentPreview name="marker-demo">
+<ComponentPreview name="marker-demo" previewClass="style-rhea theme-blue">
 
 <div></div>
 

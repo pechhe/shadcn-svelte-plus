@@ -13,10 +13,7 @@
 <div
 	bind:this={ref}
 	data-slot="message-content"
-	class={cn(
-		"flex w-full min-w-0 flex-col gap-2.5 wrap-break-word group-data-[align=end]/message:*:data-slot:self-end",
-		className
-	)}
+	class={cn("cn-message-content flex w-full min-w-0 flex-col wrap-break-word", className)}
 	{...restProps}
 >
 	{@render children?.()}

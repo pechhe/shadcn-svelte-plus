@@ -13,7 +13,7 @@
 <div
 	bind:this={ref}
 	data-slot="bubble-group"
-	class={cn("flex min-w-0 flex-col gap-2", className)}
+	class={cn("cn-bubble-group flex min-w-0 flex-col", className)}
 	{...restProps}
 >
 	{@render children?.()}

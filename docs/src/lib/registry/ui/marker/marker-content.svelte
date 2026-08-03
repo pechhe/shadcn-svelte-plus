@@ -13,10 +13,7 @@
 <span
 	bind:this={ref}
 	data-slot="marker-content"
-	class={cn(
-		"min-w-0 wrap-break-word group-data-[variant=separator]/marker:flex-none group-data-[variant=separator]/marker:text-center *:[a]:underline *:[a]:underline-offset-3 *:[a]:hover:text-foreground",
-		className
-	)}
+	class={cn("cn-marker-content min-w-0 wrap-break-word", className)}
 	{...restProps}
 >
 	{@render children?.()}

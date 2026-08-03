@@ -1,6 +1,6 @@
 ---
 title: Message
-description: Displays a message in a conversation with optional avatar, header, footer, and alignment.
+description: Displays a message in a conversation, with optional avatar, header, footer, and alignment.
 component: true
 links:
   source: https://github.com/pechhe/shadcn-svelte-plus/tree/main/docs/src/lib/registry/ui/message
@@ -10,9 +10,11 @@ links:
 	import ComponentPreview from "$lib/components/component-preview.svelte";
 </script>
 
-`Message` owns the row layout around a message surface: avatar, alignment, header, and footer. Render the visible surface with [`Bubble`](/docs/components/bubble), and use [`Message Scroller`](/docs/components/message-scroller) around the transcript.
+The `Message` component lays out a single message in a conversation. It handles the avatar, alignment, header, and footer around the message surface.
 
-<ComponentPreview name="message-demo">
+For AI apps, render reasoning steps, tool calls, and assistant messages inside the `Message` component. Render the visible surface with [`Bubble`](/docs/components/bubble), and use [`Message Scroller`](/docs/components/message-scroller) around the transcript.
+
+<ComponentPreview name="message-demo" previewClass="style-rhea theme-blue">
 
 <div></div>
 

@@ -1,3 +1,22 @@
+<script lang="ts" module>
+	import { tv } from "tailwind-variants";
+
+	const bubbleReactionsVariants = tv({
+		base: "cn-bubble-reactions absolute z-10 flex w-fit items-center justify-center",
+		variants: {
+			side: {
+				top: "cn-bubble-reactions-side-top",
+				bottom: "cn-bubble-reactions-side-bottom",
+			},
+			align: {
+				start: "cn-bubble-reactions-align-start",
+				end: "cn-bubble-reactions-align-end",
+			},
+		},
+		defaultVariants: { side: "bottom", align: "end" },
+	});
+</script>
+
 <script lang="ts">
 	import { cn, type WithElementRef } from "$lib/utils.js";
 	import type { HTMLAttributes } from "svelte/elements";
@@ -20,10 +39,7 @@
 	data-slot="bubble-reactions"
 	data-side={side}
 	data-align={align}
-	class={cn(
-		"absolute z-10 flex w-fit shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-1.5 py-0.5 text-sm ring-3 ring-card has-[button]:p-0 data-[align=end]:right-3 data-[align=start]:left-3 data-[side=bottom]:bottom-0 data-[side=bottom]:translate-y-3/4 data-[side=top]:top-0 data-[side=top]:-translate-y-3/4",
-		className
-	)}
+	class={cn(bubbleReactionsVariants({ side, align }), className)}
 	{...restProps}
 >
 	{@render children?.()}

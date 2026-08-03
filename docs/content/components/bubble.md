@@ -1,6 +1,6 @@
 ---
 title: Bubble
-description: Displays conversational content in a message bubble with variants, alignment, grouping, and reactions.
+description: Displays conversational content in a message bubble. Supports variants, alignment, grouping, reactions, and collapsible content.
 component: true
 links:
   source: https://github.com/pechhe/shadcn-svelte-plus/tree/main/docs/src/lib/registry/ui/bubble
@@ -10,9 +10,11 @@ links:
 	import ComponentPreview from "$lib/components/component-preview.svelte";
 </script>
 
-`Bubble` is the framed conversation surface. Put avatars, names, timestamps, and message-level actions in [`Message`](/docs/components/message).
+The `Bubble` component displays framed conversational content. Use it for chat text, short structured output, quoted replies, suggestions, and reactions.
 
-<ComponentPreview name="bubble-demo">
+For full-featured chat interfaces, use the [`Message`](/docs/components/message) component. `Bubble` is intentionally scoped to the bubble surface. Place avatars, names, timestamps, metadata, and message-level actions in `Message`.
+
+<ComponentPreview name="bubble-demo" previewClass="style-rhea theme-blue">
 
 <div></div>
 

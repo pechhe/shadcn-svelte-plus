@@ -10,10 +10,11 @@ export type MessageScrollerScrollOptions = {
 	scrollMargin?: number;
 };
 export type MessageScrollerScrollable = { start: boolean; end: boolean };
-export type MessageScrollerVisibility = {
+export type MessageScrollerVisibilityState = {
 	currentAnchorId: string | null;
 	visibleMessageIds: string[];
 };
+export type MessageScrollerVisibility = MessageScrollerVisibilityState;
 
 type Mode = "following-bottom" | "free-scrolling" | "anchored-to-message" | "settling-jump";
 type PrependAnchor = { element: HTMLElement; viewportTop: number };
@@ -39,7 +40,7 @@ export class MessageScrollerController {
 	items = new SvelteMap<string, HTMLElement>();
 
 	scrollable = $state<MessageScrollerScrollable>({ start: false, end: false });
-	visibility = $state<MessageScrollerVisibility>({
+	visibility = $state<MessageScrollerVisibilityState>({
 		currentAnchorId: null,
 		visibleMessageIds: [],
 	});
@@ -545,13 +546,13 @@ export class MessageScrollerController {
 		const style = content ? window.getComputedStyle(content) : null;
 		const paddingStart = this.readPixel(style?.paddingBlockStart || style?.paddingTop);
 		const paddingEnd = this.readPixel(style?.paddingBlockEnd || style?.paddingBottom);
-		if (align === "center")
-			return (
-				top -
-				paddingStart -
-				(viewport.clientHeight - paddingStart - paddingEnd - height) / 2 -
-				margin
+		if (align === "center") {
+			const availableHeight = Math.max(
+				0,
+				viewport.clientHeight - paddingStart - paddingEnd - height
 			);
+			return top - paddingStart - availableHeight / 2 - margin;
+		}
 		if (align === "end") return top - viewport.clientHeight + height + paddingEnd + margin;
 		if (align === "nearest") {
 			const bottom = top + height;
@@ -593,14 +594,24 @@ export class MessageScrollerController {
 export type MessageScrollerContext = MessageScrollerController;
 export const MESSAGE_SCROLLER_CONTEXT = Symbol("shadcn-svelte.message-scroller");
 
-export function useMessageScroller(): MessageScrollerController {
+export function useMessageScrollerController(): MessageScrollerController {
 	const context = getContext<MessageScrollerController>(MESSAGE_SCROLLER_CONTEXT);
 	if (!context) throw new Error("useMessageScroller must be used within MessageScroller.Provider.");
 	return context;
 }
 
+export function useMessageScroller() {
+	const context = useMessageScrollerController();
+	return {
+		scrollToStart: (options?: MessageScrollerScrollOptions) => context.scrollToStart(options),
+		scrollToEnd: (options?: MessageScrollerScrollOptions) => context.scrollToEnd(options),
+		scrollToMessage: (messageId: string, options?: MessageScrollerScrollOptions) =>
+			context.scrollToMessage(messageId, options),
+	};
+}
+
 export function useMessageScrollerScrollable() {
-	const context = useMessageScroller();
+	const context = useMessageScrollerController();
 	return {
 		get start() {
 			return context.scrollable.start;
@@ -612,7 +623,7 @@ export function useMessageScrollerScrollable() {
 }
 
 export function useMessageScrollerVisibility() {
-	const context = useMessageScroller();
+	const context = useMessageScrollerController();
 	return {
 		get visibleMessageIds() {
 			return context.visibility.visibleMessageIds;

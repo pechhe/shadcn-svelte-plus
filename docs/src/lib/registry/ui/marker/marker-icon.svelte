@@ -14,7 +14,7 @@
 	bind:this={ref}
 	data-slot="marker-icon"
 	aria-hidden="true"
-	class={cn("size-4 shrink-0 [&_svg:not([class*='size-'])]:size-4", className)}
+	class={cn("cn-marker-icon shrink-0", className)}
 	{...restProps}
 >
 	{@render children?.()}

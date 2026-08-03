@@ -1,48 +1,36 @@
 <script lang="ts">
-	import HeartIcon from "@lucide/svelte/icons/heart";
-	import ThumbsUpIcon from "@lucide/svelte/icons/thumbs-up";
 	import * as Bubble from "$lib/registry/ui/bubble/index.js";
 </script>
 
-<div class="flex w-full max-w-xl flex-col gap-8">
-	<div class="flex flex-col gap-3">
-		<div class="px-1 text-xs font-medium text-muted-foreground">Conversation</div>
-		<Bubble.Group class="w-full">
-			<Bubble.Root variant="muted">
-				<Bubble.Content>Hi! Can you review this layout for me?</Bubble.Content>
-			</Bubble.Root>
-			<Bubble.Root align="end" variant="default">
-				<Bubble.Content>Absolutely. The spacing and hierarchy look good.</Bubble.Content>
-				<Bubble.Reactions align="end">
-					<button class="flex items-center gap-1 rounded-full px-2 py-1 text-xs" aria-label="Like">
-						<ThumbsUpIcon class="size-3.5" /> 2
-					</button>
-				</Bubble.Reactions>
-			</Bubble.Root>
-			<Bubble.Root variant="tinted">
-				<Bubble.Content>
-					The tinted variant works well for assistant responses and supporting content.
-				</Bubble.Content>
-			</Bubble.Root>
-		</Bubble.Group>
-	</div>
-
-	<div class="grid gap-3 sm:grid-cols-2">
-		{#each [["secondary", "Secondary"], ["outline", "Outline"], ["ghost", "Ghost"], ["destructive", "Destructive"]] as [variant, label] (variant)}
-			<Bubble.Root variant={variant as "secondary" | "outline" | "ghost" | "destructive"}>
-				<Bubble.Content>{label} bubble with a short message.</Bubble.Content>
-			</Bubble.Root>
-		{/each}
-	</div>
-
-	<Bubble.Root align="end" variant="secondary">
-		<Bubble.Content>
-			<Bubble.Reactions side="top" align="end">
-				<button class="flex items-center gap-1 rounded-full px-2 py-1 text-xs" aria-label="Love">
-					<HeartIcon class="size-3.5 fill-current" /> 4
-				</button>
+<div class="flex w-full max-w-sm flex-col gap-8 py-12">
+	<Bubble.Root align="end">
+		<Bubble.Content>Hey there! what's up?</Bubble.Content>
+	</Bubble.Root>
+	<Bubble.Group>
+		<Bubble.Root variant="muted">
+			<Bubble.Content>Hey! Want to see chat bubbles?</Bubble.Content>
+		</Bubble.Root>
+		<Bubble.Root variant="muted">
+			<Bubble.Content>
+				I can group messages, switch sides, and keep the whole thread easy to scan.
+			</Bubble.Content>
+			<Bubble.Reactions role="img" aria-label="Reaction: thumbs up">
+				<span>👍</span>
 			</Bubble.Reactions>
-			A bubble can also contain a reaction row positioned above or below it.
+		</Bubble.Root>
+	</Bubble.Group>
+	<Bubble.Root align="end">
+		<Bubble.Content>Sure. Hit me with your best demo.</Bubble.Content>
+	</Bubble.Root>
+	<Bubble.Root variant="muted">
+		<Bubble.Content>
+			Yes. You are reading a demo that is demoing itself. Very meta. Very on-brand.
 		</Bubble.Content>
+		<Bubble.Reactions role="img" aria-label="Reactions: thumbs up, fire, eyes, and 2 more">
+			<span>👍</span>
+			<span>🔥</span>
+			<span>👀</span>
+			<span>+2</span>
+		</Bubble.Reactions>
 	</Bubble.Root>
 </div>

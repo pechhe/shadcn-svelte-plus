@@ -13,10 +13,7 @@
 <div
 	bind:this={ref}
 	data-slot="message-header"
-	class={cn(
-		"flex max-w-full min-w-0 items-center px-3 text-xs font-medium text-muted-foreground group-has-data-[variant=ghost]/message:px-0",
-		className
-	)}
+	class={cn("cn-message-header flex max-w-full min-w-0 items-center", className)}
 	{...restProps}
 >
 	{@render children?.()}

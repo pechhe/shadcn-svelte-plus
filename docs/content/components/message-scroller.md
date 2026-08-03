@@ -1,6 +1,6 @@
 ---
 title: Message Scroller
-description: A chat scroll container that anchors turns, follows streamed responses, preserves prepended history, and jumps to messages.
+description: A chat scroll container that anchors turns, opens saved transcripts, follows streamed responses, loads history without jumping, and jumps to any message.
 component: true
 links:
   source: https://github.com/pechhe/shadcn-svelte-plus/tree/main/docs/src/lib/registry/ui/message-scroller
@@ -12,7 +12,7 @@ links:
 
 `MessageScroller` owns transcript scroll behavior without owning your messages, transport, persistence, or AI state. It follows streamed output only while the reader is following, anchors new turns near the top, preserves position when history is prepended, and supports message jumps.
 
-<ComponentPreview name="message-scroller-demo">
+<ComponentPreview name="message-scroller-demo" class="rounded-[34px] sm:rounded-4xl" previewClass="style-rhea theme-blue h-auto bg-surface p-4! min-[480px]:p-8! min-[560px]:p-10! sm:px-10! sm:py-16! dark:bg-background">
 
 <div></div>
 

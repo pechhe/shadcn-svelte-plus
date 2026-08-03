@@ -10,9 +10,9 @@ links:
 	import ComponentPreview from "$lib/components/component-preview.svelte";
 </script>
 
-`Attachment` displays a file or image attachment with media, metadata, actions, and upload state. Use it in chat composers, message threads, and upload lists.
+The `Attachment` component displays a file or image attachment, its media, name, and metadata, with optional actions and upload state. Use it for files and images in chat composers, message threads, and upload lists.
 
-<ComponentPreview name="attachment-demo">
+<ComponentPreview name="attachment-demo" previewClass="style-rhea theme-blue bg-surface dark:bg-background">
 
 <div></div>
 
