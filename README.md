@@ -13,6 +13,29 @@
 
 Accessible and customizable components that you can copy and paste into your apps. Free. Open Source. **Use this to build your own component library**.
 
+## About this fork
+
+**shadcn-svelte-plus** tracks [`huntabyte/shadcn-svelte`](https://github.com/huntabyte/shadcn-svelte) and ports newer shadcn/ui components and utilities that are not yet available in the upstream Svelte registry.
+
+Additional components currently include:
+
+- Attachment
+- Bubble
+- Direction
+- Marker
+- Message
+- Message Scroller
+- Typeset
+
+Until this fork has its own hosted registry, install an item from its generated GitHub registry URL. Replace `vega` with the style in your `components.json` (`luma`, `lyra`, `maia`, `mira`, `nova`, `rhea`, `sera`, or `vega`).
+
+```bash
+npx shadcn-svelte@latest add \
+  https://raw.githubusercontent.com/pechhe/shadcn-svelte-plus/main/docs/static/registry/styles/vega/attachment.json
+```
+
+The standard shadcn-svelte CLI resolves component dependencies and adapts icons to the library configured in your project.
+
 ![hero](docs/static/opengraph-image.png)
 
 ## Documentation
