@@ -11,6 +11,17 @@
 	}: WithElementRef<HTMLAttributes<HTMLDivElement>> & { variant?: "icon" | "image" } = $props();
 </script>
 
-<div bind:this={ref} data-slot="attachment-media" data-variant={variant} class={cn("flex aspect-square size-10 shrink-0 items-center justify-center overflow-hidden rounded-md bg-muted text-muted-foreground group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive [&_img]:size-full [&_img]:object-cover", variant === "image" && "size-24", className)} {...restProps}>
+<div
+	bind:this={ref}
+	data-slot="attachment-media"
+	data-variant={variant}
+	class={cn(
+		"relative flex aspect-square w-10 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted text-foreground group-data-[orientation=vertical]/attachment:w-full group-data-[size=sm]/attachment:w-8 group-data-[size=xs]/attachment:w-7 group-data-[size=xs]/attachment:rounded-md group-data-[state=error]/attachment:bg-destructive/10 group-data-[state=error]/attachment:text-destructive group-data-[orientation=vertical]/attachment:*:data-[slot=spinner]:!size-6 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 group-data-[orientation=vertical]/attachment:[&_svg:not([class*='size-'])]:size-6 group-data-[size=xs]/attachment:[&_svg:not([class*='size-'])]:size-3.5",
+		variant === "image" &&
+			"opacity-60 group-data-[state=done]/attachment:opacity-100 group-data-[state=idle]/attachment:opacity-100 *:[img]:aspect-square *:[img]:w-full *:[img]:object-cover",
+		className
+	)}
+	{...restProps}
+>
 	{@render children?.()}
 </div>

@@ -251,7 +251,9 @@
 	{
 		"name": "message-scroller",
 		"type": "registry:ui",
-		"registryDependencies": [],
+		"registryDependencies": [
+			"button"
+		],
 		"relativeUrl": "message-scroller.json"
 	},
 	{

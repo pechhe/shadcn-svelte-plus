@@ -1,31 +1,65 @@
 <script lang="ts">
 	import { cn, type WithElementRef } from "$lib/utils.js";
-	import { useMessageScroller } from "./message-scroller.svelte.js";
+	import {
+		MESSAGE_SCROLLER_USER_SCROLL_KEYS,
+		useMessageScroller,
+	} from "./message-scroller.svelte.js";
 	import type { HTMLAttributes } from "svelte/elements";
 
-	const context = useMessageScroller();
-	let { ref = $bindable(null), class: className, children, onscroll, ...restProps }: WithElementRef<
-		HTMLAttributes<HTMLDivElement>
-	> = $props();
-	function refresh() {
-		if (!ref) return;
-		context.state.canScrollStart = ref.scrollTop > 1;
-		context.state.canScrollEnd = ref.scrollTop + ref.clientHeight < ref.scrollHeight - 1;
-	}
+	const controller = useMessageScroller();
+	let {
+		ref = $bindable(null),
+		class: className,
+		children,
+		preserveScrollOnPrepend = true,
+		onscroll,
+		onwheel,
+		ontouchmove,
+		onkeydown,
+		role = "region",
+		"aria-label": ariaLabel = "Messages",
+		tabindex = 0,
+		...restProps
+	}: WithElementRef<HTMLAttributes<HTMLDivElement>> & {
+		preserveScrollOnPrepend?: boolean;
+	} = $props();
 
 	function handleScroll(event: UIEvent & { currentTarget: EventTarget & HTMLDivElement }) {
-		refresh();
-		if (!context.state.programmatic) context.state.follow = context.state.autoScroll && !context.state.canScrollEnd;
+		controller.syncAfterScroll();
 		onscroll?.(event);
 	}
 
+	function handleWheel(event: WheelEvent & { currentTarget: EventTarget & HTMLDivElement }) {
+		controller.userScrollIntent();
+		onwheel?.(event);
+	}
+
+	function handleTouchMove(event: TouchEvent & { currentTarget: EventTarget & HTMLDivElement }) {
+		controller.userScrollIntent();
+		ontouchmove?.(event);
+	}
+
+	function handleKeydown(event: KeyboardEvent & { currentTarget: EventTarget & HTMLDivElement }) {
+		if (MESSAGE_SCROLLER_USER_SCROLL_KEYS.includes(event.key)) controller.userScrollIntent();
+		onkeydown?.(event);
+	}
+
 	$effect(() => {
-		context.setViewport(ref);
-		if (!ref) return;
-		const observer = new ResizeObserver(refresh);
+		controller.preserveScrollOnPrepend = preserveScrollOnPrepend;
+		controller.setViewport(ref);
+		if (!ref || typeof ResizeObserver === "undefined") return;
+
+		let frame = 0;
+		const observer = new ResizeObserver(() => {
+			window.cancelAnimationFrame(frame);
+			frame = window.requestAnimationFrame(() => controller.handleResize());
+		});
 		observer.observe(ref);
-		refresh();
-		return () => observer.disconnect();
+		return () => {
+			window.cancelAnimationFrame(frame);
+			observer.disconnect();
+			controller.setViewport(null);
+		};
 	});
 </script>
 
@@ -33,13 +67,17 @@
 <div
 	bind:this={ref}
 	data-slot="message-scroller-viewport"
-	data-autoscrolling={context.state.programmatic || undefined}
-	data-scrollable={context.state.canScrollStart || context.state.canScrollEnd || undefined}
-	role="region"
-	aria-label="Messages"
-	tabindex="0"
-	class={cn("size-full min-h-0 min-w-0 overflow-y-auto overscroll-contain scroll-smooth", className)}
+	{role}
+	aria-label={ariaLabel}
+	{tabindex}
+	class={cn(
+		"size-full min-h-0 min-w-0 scroll-fade-b scrollbar-thin scrollbar-gutter-stable overflow-y-auto overscroll-contain contain-content data-autoscrolling:scrollbar-none",
+		className
+	)}
 	onscroll={handleScroll}
+	onwheel={handleWheel}
+	ontouchmove={handleTouchMove}
+	onkeydown={handleKeydown}
 	{...restProps}
 >
 	{@render children?.()}

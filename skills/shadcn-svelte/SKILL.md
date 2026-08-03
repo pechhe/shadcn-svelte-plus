@@ -153,12 +153,12 @@ These are the most common patterns that differentiate correct shadcn-svelte code
 | Charts                     | `Chart` (LayerChart)                                                                                |
 | Layout                     | `Card`, `Separator`, `Resizable`, `ScrollArea`, `Accordion`, `Collapsible`                          |
 | Empty states               | `Empty`                                                                                             |
-| Chat message structure     | `Message.Group` + `Message.Root` + `Message.Content`; use `Bubble` for the visual message body    |
-| Live chat timeline         | `MessageScroller.Provider` + `Root` + `Viewport` + `Content` + keyed `Item` elements               |
-| File/media attachment      | `Attachment.Root` with `Media`, `Content`, and `Actions`                                           |
+| Chat message structure     | `Message.Group` + `Message.Root` + `Message.Content`; use `Bubble` for the visual message body      |
+| Live chat timeline         | `MessageScroller.Provider` + `Root` + `Viewport` + `Content` + keyed `Item` elements                |
+| File/media attachment      | `Attachment.Root` with `Media`, `Content`, and `Actions`                                            |
 | Rich article or markdown   | `Typeset` wrapper                                                                                   |
 | Inline status/separator    | `Marker.Root` with `Marker.Icon` and `Marker.Content`                                               |
-| RTL/LTR subtree            | `DirectionProvider direction="rtl"` (or `"ltr"`)                                                  |
+| RTL/LTR subtree            | `DirectionProvider direction="rtl"` (or `"ltr"`)                                                    |
 | Menus                      | `DropdownMenu`, `ContextMenu`, `Menubar`                                                            |
 | Tooltips/info              | `Tooltip`, `HoverCard`, `Popover`                                                                   |
 

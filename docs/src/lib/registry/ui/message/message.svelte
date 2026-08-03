@@ -15,7 +15,10 @@
 	bind:this={ref}
 	data-slot="message"
 	data-align={align}
-	class={cn("group/message relative flex w-full min-w-0 gap-2 data-[align=end]:flex-row-reverse", className)}
+	class={cn(
+		"group/message relative flex w-full min-w-0 gap-2 text-sm data-[align=end]:flex-row-reverse",
+		className
+	)}
 	{...restProps}
 >
 	{@render children?.()}

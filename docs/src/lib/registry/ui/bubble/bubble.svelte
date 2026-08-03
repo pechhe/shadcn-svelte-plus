@@ -2,20 +2,26 @@
 	import { tv, type VariantProps } from "tailwind-variants";
 
 	export const bubbleVariants = tv({
-		base: "group/bubble relative flex w-fit min-w-0 max-w-[80%] flex-col",
+		base: "group/bubble relative flex w-fit max-w-[80%] min-w-0 flex-col gap-1 group-data-[align=end]/message:self-end data-[align=end]:self-end data-[variant=ghost]:max-w-full",
 		variants: {
 			variant: {
-				default: "bg-primary text-primary-foreground",
-				secondary: "bg-secondary text-secondary-foreground",
-				muted: "bg-muted text-foreground",
-				tinted: "bg-primary/10 text-foreground",
-				outline: "border bg-background text-foreground",
-				ghost: "max-w-full text-foreground",
-				destructive: "bg-destructive/10 text-destructive",
+				default:
+					"*:data-[slot=bubble-content]:bg-primary *:data-[slot=bubble-content]:text-primary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-primary/80",
+				secondary:
+					"*:data-[slot=bubble-content]:bg-secondary *:data-[slot=bubble-content]:text-secondary-foreground [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)]",
+				muted:
+					"*:data-[slot=bubble-content]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[color-mix(in_oklch,var(--muted),var(--foreground)_5%)]",
+				tinted:
+					"*:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.93_calc(c*0.4)_h)] *:data-[slot=bubble-content]:text-foreground dark:*:data-[slot=bubble-content]:bg-[oklch(from_var(--primary)_0.3_calc(c*0.4)_h)] [&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.88_calc(c*0.5)_h)] dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-[oklch(from_var(--primary)_0.35_calc(c*0.5)_h)]",
+				outline:
+					"*:data-[slot=bubble-content]:border-border *:data-[slot=bubble-content]:bg-background [&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:text-foreground dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-input/30",
+				ghost:
+					"border-none *:data-[slot=bubble-content]:rounded-none *:data-[slot=bubble-content]:bg-transparent *:data-[slot=bubble-content]:p-0 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted [&>[data-slot=bubble-content]:is(button,a):hover]:text-foreground dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-muted/50",
+				destructive:
+					"*:data-[slot=bubble-content]:bg-destructive/10 *:data-[slot=bubble-content]:text-destructive dark:*:data-[slot=bubble-content]:bg-destructive/20 [&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/20 dark:[&>[data-slot=bubble-content]:is(button,a):hover]:bg-destructive/30",
 			},
-			align: { start: "self-start", end: "self-end" },
 		},
-		defaultVariants: { variant: "default", align: "start" },
+		defaultVariants: { variant: "default" },
 	});
 
 	export type BubbleVariant = VariantProps<typeof bubbleVariants>["variant"];
@@ -38,6 +44,13 @@
 	} = $props();
 </script>
 
-<div bind:this={ref} data-slot="bubble" data-variant={variant} data-align={align} class={cn(bubbleVariants({ variant, align }), className)} {...restProps}>
+<div
+	bind:this={ref}
+	data-slot="bubble"
+	data-variant={variant}
+	data-align={align}
+	class={cn(bubbleVariants({ variant }), className)}
+	{...restProps}
+>
 	{@render children?.()}
 </div>

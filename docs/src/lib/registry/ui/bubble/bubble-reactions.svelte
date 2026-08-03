@@ -20,7 +20,10 @@
 	data-slot="bubble-reactions"
 	data-side={side}
 	data-align={align}
-	class={cn("absolute z-10 flex w-fit items-center justify-center rounded-full border bg-background px-1 py-0.5 text-xs shadow-sm data-[side=bottom]:-bottom-3 data-[side=top]:-top-3 data-[align=end]:right-2 data-[align=start]:left-2", className)}
+	class={cn(
+		"absolute z-10 flex w-fit shrink-0 items-center justify-center gap-1 rounded-full bg-muted px-1.5 py-0.5 text-sm ring-3 ring-card has-[button]:p-0 data-[align=end]:right-3 data-[align=start]:left-3 data-[side=bottom]:bottom-0 data-[side=bottom]:translate-y-3/4 data-[side=top]:top-0 data-[side=top]:-translate-y-3/4",
+		className
+	)}
 	{...restProps}
 >
 	{@render children?.()}

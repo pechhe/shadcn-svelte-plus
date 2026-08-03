@@ -1,7 +1,7 @@
-import Group from "./bubble-group.svelte";
-import Root, { bubbleVariants, type BubbleVariant } from "./bubble.svelte";
 import Content from "./bubble-content.svelte";
+import Group from "./bubble-group.svelte";
 import Reactions from "./bubble-reactions.svelte";
+import Root, { bubbleVariants, type BubbleVariant } from "./bubble.svelte";
 
 export {
 	Group,

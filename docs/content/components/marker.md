@@ -1,8 +1,12 @@
 ---
 title: Marker
-description: Use Marker to label or separate content with an icon and description.
+description: Displays an inline status, system note, bordered row, or labeled separator in a conversation.
 component: true
+links:
+  source: https://github.com/pechhe/shadcn-svelte-plus/tree/main/docs/src/lib/registry/ui/marker
 ---
+
+Compose `Marker` with [`Message`](/docs/components/message) for status updates, system notes, and labeled separators in a conversation.
 
 ## Installation
 
@@ -14,14 +18,48 @@ npx shadcn-svelte@latest add marker
 
 ```svelte
 <script lang="ts">
-  import * as Marker from "$lib/components/ui/marker";
-  import InfoIcon from "@lucide/svelte/icons/info";
+  import * as Marker from "$lib/components/ui/marker/index.js";
+  import CheckIcon from "@lucide/svelte/icons/check";
 </script>
 
-<Marker.Root variant="border">
-  <Marker.Icon><InfoIcon /></Marker.Icon>
-  <Marker.Content>Changes are saved automatically.</Marker.Content>
+<Marker.Root>
+  <Marker.Icon><CheckIcon /></Marker.Icon>
+  <Marker.Content>Explored 4 files</Marker.Content>
 </Marker.Root>
 ```
 
-`Marker.Root` supports `default`, `border`, and `separator` variants.
+## Variants
+
+- `default`: an inline status, note, or action.
+- `border`: the default row with a bottom border.
+- `separator`: a centered label with decorative lines on each side.
+
+## Status and shimmer
+
+Use `role="status"` for streaming or in-progress updates. Add `shimmer` to the content for streaming text.
+
+```svelte
+<Marker.Root role="status">
+  <Marker.Icon><Spinner /></Marker.Icon>
+  <Marker.Content class="shimmer">Compacting conversation</Marker.Content>
+</Marker.Root>
+```
+
+`Marker.Icon` is decorative and hidden from assistive technology. Keep the meaning in `Marker.Content`, or add an `aria-label` to an icon-only marker.
+
+## Links and buttons
+
+Use the `child` snippet to render a native link or button:
+
+```svelte
+<Marker.Root>
+  {#snippet child({ props })}
+    <a {...props} href="/files">
+      <Marker.Icon><FileTextIcon /></Marker.Icon>
+      <Marker.Content>Explored 4 files</Marker.Content>
+    </a>
+  {/snippet}
+</Marker.Root>
+```
+
+A labeled separator needs no `role`. Do not add `role="separator"` to a divider with meaningful visible text, because separator descendants are treated as presentational.
