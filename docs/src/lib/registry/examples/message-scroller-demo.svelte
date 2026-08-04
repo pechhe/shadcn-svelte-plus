@@ -112,7 +112,7 @@
 	onDestroy(stopPlayback);
 </script>
 
-<MessageScroller.Provider autoScroll>
+<MessageScroller.Provider>
 	<div class="style-rhea relative flex flex-col gap-4">
 		<Card.Root class="mx-auto h-140 w-full max-w-sm gap-0">
 			<Card.Header class="gap-1 border-b">
