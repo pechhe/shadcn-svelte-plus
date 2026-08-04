@@ -26,79 +26,94 @@
 
 	const conversationTurns = [
 		{
-			user: "I'm building a chat for our app and the scroll behavior is driving me nuts.",
+			user: "I'm building a chat for our app and the scroll behavior is driving me nuts. Every time the AI streams a reply, the whole thread jumps around.",
 			assistant:
-				"Wrap your message list in MessageScroller and turn on autoScroll. It follows new content while the reader is at the bottom and backs off as soon as they scroll up.",
+				"That's the classic streaming scroll problem. Wrap your message list in `MessageScroller` and turn on `autoScroll` — the viewport pins to the bottom as tokens arrive, so users always see the latest text land in place.\n\nThe important part: it only auto-scrolls while the reader is already at the bottom. The moment they scroll up to read something earlier, auto-scroll backs off and their position is preserved. You get smooth streaming without fighting the user's intent.",
 		},
 		{
-			user: "Okay, but new messages still feel jarring.",
+			user: "Okay, but when someone sends a new message the view still feels jarring — like the whole conversation reloads from the top.",
 			assistant:
-				"Set scrollAnchor on each user turn. The new exchange settles into view while a small peek of the previous context remains visible.",
+				"MessageScrollerItem fixes that with turn anchoring. Set `scrollAnchor` on the turn that should settle near the top instead of blindly snapping to the document bottom.\n\nIt also leaves a small peek of the previous exchange visible above the anchor, so context isn't lost. The reply starts in view without that disorienting jump you get from a plain overflow container.",
 		},
 		{
-			user: "And if someone scrolls up to read an older answer?",
+			user: "And if they've scrolled up to re-read an older answer? I don't want to yank them back down.",
 			assistant:
-				"Their position stays put. MessageScrollerButton appears when unseen content is below and returns them to the live edge when they are ready.",
+				"You won't. Auto-scroll only runs when the viewport is already pinned to the bottom, so scrolling up is a deliberate opt-out — their place in the thread stays put even as new tokens keep arriving below.\n\nWhen there is content they haven't seen yet, `MessageScrollerButton` appears at the bottom of the viewport. One tap jumps them back to the newest message and re-engages auto-scroll. Same pattern as Slack or iMessage: quiet when you're caught up, helpful when you're not.",
 		},
 		{
 			user: "Last one — does this work with assistive tech?",
 			assistant:
-				'MessageScrollerContent uses role="log" and aria-relevant="additions", and the scroll control is a real button with an accessible label.',
+				'`MessageScrollerContent` sets `role="log"` and `aria-relevant="additions"` by default, so screen readers announce new messages as they stream in.\n\nThe scroll button is a real `<button>` with an sr-only label, and it\'s removed from the tab order when you\'re already at the bottom — no ghost focus stops.',
 		},
-	];
+	] as const;
 
 	let messages = $state<DemoMessage[]>([]);
 	let turnIndex = $state(0);
+	let status = $state<"ready" | "submitted" | "streaming">("ready");
+	let replyTimer: ReturnType<typeof setTimeout> | undefined;
 	let streamingTimer: ReturnType<typeof setInterval> | undefined;
-	let isStreaming = $state(false);
 	const nextMessage = $derived(conversationTurns[turnIndex]?.user);
+	const isBusy = $derived(status !== "ready");
 
-	function resetConversation() {
+	function stopPlayback() {
+		if (replyTimer) clearTimeout(replyTimer);
 		if (streamingTimer) clearInterval(streamingTimer);
+		replyTimer = undefined;
 		streamingTimer = undefined;
-		messages = [];
-		turnIndex = 0;
-		isStreaming = false;
 	}
 
-	function streamAssistantMessage(turn: (typeof conversationTurns)[number]) {
-		const messageId = `assistant-${turnIndex}`;
-		const words = turn.assistant.split(" ");
-		let wordIndex = 0;
-		messages = [...messages, { id: messageId, role: "assistant", text: "" }];
+	function resetConversation() {
+		stopPlayback();
+		messages = [];
+		turnIndex = 0;
+		status = "ready";
+	}
+
+	function streamAssistantMessage(turn: (typeof conversationTurns)[number], index: number) {
+		const messageId = `assistant-${index}`;
+		const chunks = turn.assistant.match(/\S+\s*/g) ?? [turn.assistant];
+		let chunkIndex = 0;
+		let hasStarted = false;
+		status = "streaming";
 
 		streamingTimer = setInterval(() => {
-			wordIndex += 1;
-			messages = messages.map((message) =>
-				message.id === messageId
-					? { ...message, text: words.slice(0, wordIndex).join(" ") }
-					: message
-			);
-			if (wordIndex < words.length) return;
-			clearInterval(streamingTimer);
+			chunkIndex += 1;
+			const text = chunks.slice(0, chunkIndex).join("");
+
+			if (hasStarted) {
+				messages = messages.map((message) =>
+					message.id === messageId ? { ...message, text } : message
+				);
+			} else {
+				hasStarted = true;
+				messages = [...messages, { id: messageId, role: "assistant", text }];
+			}
+
+			if (chunkIndex < chunks.length) return;
+			if (streamingTimer) clearInterval(streamingTimer);
 			streamingTimer = undefined;
 			turnIndex += 1;
-			isStreaming = false;
-		}, 35);
+			status = "ready";
+		}, 24);
 	}
 
 	function sendNextMessage(event: SubmitEvent) {
 		event.preventDefault();
 		const turn = conversationTurns[turnIndex];
-		if (!turn || isStreaming) return;
+		if (!turn || isBusy) return;
 
-		isStreaming = true;
-		messages = [...messages, { id: `user-${turnIndex}`, role: "user", text: turn.user }];
-		streamAssistantMessage(turn);
+		stopPlayback();
+		const index = turnIndex;
+		status = "submitted";
+		messages = [...messages, { id: `user-${index}`, role: "user", text: turn.user }];
+		replyTimer = setTimeout(() => streamAssistantMessage(turn, index), 650);
 	}
 
-	onDestroy(() => {
-		if (streamingTimer) clearInterval(streamingTimer);
-	});
+	onDestroy(stopPlayback);
 </script>
 
 <MessageScroller.Provider autoScroll>
-	<div class="relative flex flex-col gap-4">
+	<div class="style-rhea relative flex flex-col gap-4">
 		<Card.Root class="mx-auto h-140 w-full max-w-sm gap-0">
 			<Card.Header class="gap-1 border-b">
 				<Card.Title>New Chat</Card.Title>
@@ -113,7 +128,7 @@
 									size="icon"
 									aria-label="Reset conversation"
 									onclick={resetConversation}
-									disabled={isStreaming}
+									disabled={isBusy}
 								>
 									<RotateCwIcon />
 								</Button>
@@ -132,22 +147,21 @@
 							</Empty.Media>
 							<Empty.Title>Morning, shadcn!</Empty.Title>
 							<Empty.Description>
-								What are we working on today? Press send to start a new
-								conversation.
+								What are we working on today? Press send to start a new conversation
 							</Empty.Description>
 						</Empty.Header>
 					</Empty.Root>
 				{:else}
 					<MessageScroller.Root>
 						<MessageScroller.Viewport>
-							<MessageScroller.Content
-								aria-busy={isStreaming}
-								class="p-(--card-spacing)"
-							>
+							<MessageScroller.Content aria-busy={isBusy} class="p-(--card-spacing)">
 								{#each messages as message (message.id)}
 									<MessageScroller.Item
 										messageId={message.id}
 										scrollAnchor={message.role === "user"}
+										class={message.role === "user"
+											? "animate-in fade-in-0 slide-in-from-bottom-2 duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:animate-none"
+											: undefined}
 									>
 										<Message.Root
 											align={message.role === "user" ? "end" : "start"}
@@ -155,10 +169,16 @@
 											<Message.Content>
 												<Bubble.Root
 													variant={message.role === "user"
-														? "default"
-														: "muted"}
+														? "muted"
+														: "ghost"}
 												>
-													<Bubble.Content>{message.text}</Bubble.Content>
+													<Bubble.Content class="space-y-2">
+														{#each message.text.split(/\n\s*\n/) as paragraph, paragraphIndex (`${message.id}-${paragraphIndex}`)}
+															<p class="whitespace-pre-wrap">
+																{paragraph}
+															</p>
+														{/each}
+													</Bubble.Content>
 												</Bubble.Root>
 											</Message.Content>
 										</Message.Root>
@@ -175,8 +195,8 @@
 					<InputGroup.Root>
 						<div class="h-14 w-full px-3 py-2.5">
 							<span
-								class="line-clamp-2 opacity-60 data-[ready=true]:opacity-100"
-								data-ready={!isStreaming}
+								class="line-clamp-2 opacity-60 data-[status=ready]:opacity-100"
+								data-status={status}
 							>
 								{#if nextMessage}
 									{nextMessage}
@@ -203,30 +223,23 @@
 									{/snippet}
 								</DropdownMenu.Trigger>
 								<DropdownMenu.Content align="start" side="top" class="w-44">
-									<DropdownMenu.Item>
-										<PaperclipIcon />
-										Add Photos & Files
-									</DropdownMenu.Item>
+									<DropdownMenu.Item
+										><PaperclipIcon /> Add Photos & Files</DropdownMenu.Item
+									>
 									<DropdownMenu.Separator />
-									<DropdownMenu.Item>
-										<ImageIcon />
-										Create Image
-									</DropdownMenu.Item>
-									<DropdownMenu.Item>
-										<TelescopeIcon />
-										Deep Research
-									</DropdownMenu.Item>
-									<DropdownMenu.Item>
-										<GlobeIcon />
-										Web Search
-									</DropdownMenu.Item>
+									<DropdownMenu.Item><ImageIcon /> Create Image</DropdownMenu.Item
+									>
+									<DropdownMenu.Item
+										><TelescopeIcon /> Deep Research</DropdownMenu.Item
+									>
+									<DropdownMenu.Item><GlobeIcon /> Web Search</DropdownMenu.Item>
 								</DropdownMenu.Content>
 							</DropdownMenu.Root>
 							<InputGroup.Button
 								type="submit"
 								variant="default"
 								size="icon-sm"
-								disabled={!nextMessage || isStreaming}
+								disabled={!nextMessage || isBusy}
 								class="ms-auto"
 							>
 								<ArrowUpIcon />
